@@ -1,9 +1,9 @@
-const Part = ({elem}) => {
-    const { part, exercises } = elem
+const Part = ({part}) => {
+    const { name, exercises } = part
 
     return(
         <p>
-            {part} {exercises}
+            {name} {exercises}
         </p>
     )
 }
