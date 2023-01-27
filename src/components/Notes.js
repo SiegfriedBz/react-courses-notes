@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 const initNote = {content: '', important: false}
 
-const Notes = ({notes, handleCreateNote, handleUpdateNote}) => {
+const Notes = ({ notes, handleCreateNote, handleUpdateNote, handleDeleteNote }) => {
     const [newNote, setNewNote] = useState(initNote)
     const [showAll, setShowAll] = useState(true)
 
@@ -42,7 +42,12 @@ const Notes = ({notes, handleCreateNote, handleUpdateNote}) => {
             </button>
             <ul>
                 {notesToShow.map((note) => {
-                    return  <Note key={note.id} note={note} handleUpdateNote={handleUpdateNote} />
+                    return  <Note
+                                key={note.id}
+                                note={note}
+                                handleUpdateNote={handleUpdateNote}
+                                handleDeleteNote={handleDeleteNote}
+                            />
                 })}
             </ul>
 

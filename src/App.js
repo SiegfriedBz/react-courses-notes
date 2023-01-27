@@ -62,6 +62,12 @@ const App = () => {
         setNotes(notes)
     }
 
+    const handleDeleteNote = async (id) => {
+        await noteService.deleteNote(id)
+        const notes = await noteService.fetchNotes()
+        setNotes(notes)
+    }
+
     return (
         <div>
             <Navbar />
@@ -71,6 +77,7 @@ const App = () => {
                     notes={notes}
                     handleCreateNote={handleCreateNote}
                     handleUpdateNote={handleUpdateNote}
+                    handleDeleteNote={handleDeleteNote}
                 />
             </div>
         </div>

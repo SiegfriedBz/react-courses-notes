@@ -40,8 +40,23 @@ const updateNote = async (note) => {
     }
 }
 
+const deleteNote = async (id) => {
+    try {
+        await fetch(`${baseURL}/notes/${id}`,{
+            method: "delete",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
 module.exports = {
     fetchNotes,
     createNote,
-    updateNote
+    updateNote,
+    deleteNote
 }
