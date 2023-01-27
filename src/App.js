@@ -1,10 +1,10 @@
-import Header from './components/Header'
-import Content from './components/Content'
-import Total from './components/Total'
-import Course from './components/Course'
+import { useState, useEffect } from "react";
+import Navbar from "./components/Navbar";
+import Courses from './components/Courses'
+import Notes from './components/Notes'
 
 const App = () => {
-    const courses = [
+    const [courses, setCourses] = useState([
         {
             name: 'Half Stack application development',
             id: 1,
@@ -30,32 +30,30 @@ const App = () => {
                     id: 4
                 }
             ]
-        },
-        {
-            name: 'Node.js',
-            id: 2,
-            parts: [
-                {
-                    name: 'Routing',
-                    exercises: 3,
-                    id: 1
-                },
-                {
-                    name: 'Middlewares',
-                    exercises: 7,
-                    id: 2
-                }
-            ]
         }
-    ]
+    ])
+    const [notes, setNotes] = useState([
+        {id: 1, content: 'Note1', important: false},
+    ])
+
+    useEffect(() => {
+        const init = async () => {
+            let response = await fetch(" http://localhost:3001/courses")
+            const courses = await response.json()
+            response = await fetch(" http://localhost:3001/notes")
+            const notes = await response.json()
+            setCourses(courses)
+            setNotes(notes)
+        }; init()
+    }, [])
 
     return (
         <>
-        {
-            courses && courses.map(course => {
-                return  <Course key={course.id} course={course}/>
-            })
-        }
+            <Navbar />
+            <div className='container'>
+                <Courses courses={courses} />
+                <Notes notes={notes} setNotes={setNotes} />
+            </div>
         </>
     )
 }
