@@ -38,7 +38,7 @@ const Notes = ({notes, handleCreateNote, handleUpdateNote}) => {
                 onClick={()=>setShowAll(!showAll)}
                 className={showBtnClass}
             >
-                Show {showAll ? 'important' : 'all'}
+                Show {showAll ? 'only important' : 'all'}
             </button>
             <ul>
                 {notesToShow.map((note) => {

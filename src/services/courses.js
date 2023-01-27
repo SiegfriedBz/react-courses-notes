@@ -1,7 +1,7 @@
-const URL = "http://localhost:3001"
+const baseURL = "http://localhost:3001"
 
 const fetchCourses = async () => {
-    const response = await fetch(`${URL}/courses`)
+    const response = await fetch(`${baseURL}/courses`)
     return await response.json()
 }
 

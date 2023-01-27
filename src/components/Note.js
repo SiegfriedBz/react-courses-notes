@@ -25,6 +25,10 @@ const Note = ({note, handleUpdateNote}) => {
                 >
                     {importantBadge()}
                 </button>
+                <button
+                    className='btn'
+                    onClick={handleDeleteNote}
+                    ></button>
             </>
             }
         </li>

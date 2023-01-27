@@ -1,28 +1,43 @@
-const URL = "http://localhost:3001"
+const baseURL = "http://localhost:3001"
 
 const fetchNotes = async () => {
-    const response = await fetch(`${URL}/notes`)
-    return await response.json()
+    try {
+        const response = await fetch(`${baseURL}/notes`)
+        return await response.json()
+    }
+    catch (err) {
+        console.log(err)
+    }
 }
 
 const createNote = async (note) => {
-    await fetch(`${URL}/notes`, {
-        method: "POST",
-        body: JSON.stringify(note),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+    try {
+        await fetch(`${baseURL}/notes`, {
+            method: "POST",
+            body: JSON.stringify(note),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    catch (err) {
+        console.log(err)
+    }
 }
 
 const updateNote = async (note) => {
-    await fetch(`${URL}/notes/${note.id}`,{
-        method: "PUT",
-        body: JSON.stringify(note),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+    try {
+        await fetch(`${baseURL}/notes/${note.id}`,{
+            method: "PUT",
+            body: JSON.stringify(note),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    catch (err) {
+        console.log(err)
+    }
 }
 
 module.exports = {
