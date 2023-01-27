@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Courses from './components/Courses'
 import Notes from './components/Notes'
-import { fetchCourses } from './services/courses'
-import { fetchNotes, createNote, updateNote } from './services/notes'
+import courseService from './services/courses'
+import noteService from './services/notes'
 
 const initCourses = [
     {
@@ -43,22 +43,22 @@ const App = () => {
 
     useEffect(() => {
         const init = async () => {
-            const courses = await fetchCourses()
-            const notes = await fetchNotes()
+            const courses = await courseService.fetchCourses()
+            const notes = await noteService.fetchNotes()
             setCourses(courses)
             setNotes(notes)
         }; init()
     }, [])
 
     const handleCreateNote = async (note) => {
-        await createNote(note)
-        const notes = await fetchNotes()
+        await noteService.createNote(note)
+        const notes = await noteService.fetchNotes()
         setNotes(notes)
     }
 
     const handleUpdateNote = async (note) => {
-        await updateNote(note)
-        const notes = await fetchNotes()
+        await noteService.updateNote(note)
+        const notes = await noteService.fetchNotes()
         setNotes(notes)
     }
 
