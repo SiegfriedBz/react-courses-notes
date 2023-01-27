@@ -1,20 +1,20 @@
-import { useState} from "react";
+import { useState  } from "react";
 import Note from "./Note";
-import { v4 as uuidv4 } from 'uuid';
+import clsx from 'clsx';
 
-const initNote = {id: '', content: '', important: false}
+const initNote = {content: '', important: false}
 
-const Notes = ({notes, setNotes}) => {
+const Notes = ({notes, handleCreateNote, handleUpdateNote}) => {
     const [newNote, setNewNote] = useState(initNote)
     const [showAll, setShowAll] = useState(true)
 
-    const addNote = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        setNotes([...notes, {...newNote, id: uuidv4()}])
+        await handleCreateNote(newNote)
         setNewNote(initNote)
     }
 
-    const handleNoteChange = (e) => {
+    const handleChange = (e) => {
         e.target.name === 'status' ?
             setNewNote({...newNote, important: !newNote.important})
             : setNewNote({...newNote, [e.target.name]: e.target.value})
@@ -24,23 +24,30 @@ const Notes = ({notes, setNotes}) => {
         notes
         : notes.filter(note => note.important)
 
+    const showBtnClass = clsx(
+        'btn btn-sm mb-3', {
+            'btn-outline-primary': !showAll,
+            'btn-outline-warning': showAll
+        }
+    )
+
     return(
         <>
-            <h2>Notes</h2>
+            <h1>Notes</h1>
             <button
                 onClick={()=>setShowAll(!showAll)}
-                className='btn btn-sm btn-outline-primary mb-3'
+                className={showBtnClass}
             >
                 Show {showAll ? 'important' : 'all'}
             </button>
             <ul>
                 {notesToShow.map((note) => {
-                    return  <Note key={note.id} note={note}/>
+                    return  <Note key={note.id} note={note} handleUpdateNote={handleUpdateNote} />
                 })}
             </ul>
 
             <h3>Create note</h3>
-            <form onSubmit={addNote}>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <input
                         id='content'
@@ -48,7 +55,7 @@ const Notes = ({notes, setNotes}) => {
                         name='content'
                         placeholder='new note...'
                         value={newNote.content}
-                        onChange={handleNoteChange}
+                        onChange={handleChange}
                         className='form-control mb-1'
                     />
                     <input
@@ -56,14 +63,14 @@ const Notes = ({notes, setNotes}) => {
                         type='checkbox'
                         checked={newNote.important}
                         name='status'
-                        onChange={handleNoteChange}
+                        onChange={handleChange}
                         className='form-check-input me-2'
                     />
                     <label htmlFor="status" className="form-label mb-1">Important</label>
                 </div>
                 <button
                     type='submit'
-                    className='btn btn-primary'
+                    className='btn btn-sm btn-primary'
                 >Save</button>
             </form>
         </>

@@ -2,59 +2,78 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Courses from './components/Courses'
 import Notes from './components/Notes'
+import { fetchCourses } from './services/courses'
+import { fetchNotes, createNote, updateNote } from './services/notes'
+
+const initCourses = [
+    {
+        name: 'Half Stack application development',
+        id: 1,
+        parts: [
+            {
+                name: 'Fundamentals of React',
+                exercises: 10,
+                id: 1
+            },
+            {
+                name: 'Using props to pass data',
+                exercises: 7,
+                id: 2
+            },
+            {
+                name: 'State of a component',
+                exercises: 14,
+                id: 3
+            },
+            {
+                name: 'Redux',
+                exercises: 11,
+                id: 4
+            }
+        ]
+    }
+]
+const initNotes = [
+    {id: 1, content: 'Note1', important: false}
+]
 
 const App = () => {
-    const [courses, setCourses] = useState([
-        {
-            name: 'Half Stack application development',
-            id: 1,
-            parts: [
-                {
-                    name: 'Fundamentals of React',
-                    exercises: 10,
-                    id: 1
-                },
-                {
-                    name: 'Using props to pass data',
-                    exercises: 7,
-                    id: 2
-                },
-                {
-                    name: 'State of a component',
-                    exercises: 14,
-                    id: 3
-                },
-                {
-                    name: 'Redux',
-                    exercises: 11,
-                    id: 4
-                }
-            ]
-        }
-    ])
-    const [notes, setNotes] = useState([
-        {id: 1, content: 'Note1', important: false},
-    ])
+    const [courses, setCourses] = useState(initCourses)
+    const [notes, setNotes] = useState(initNotes)
 
     useEffect(() => {
         const init = async () => {
-            let response = await fetch(" http://localhost:3001/courses")
-            const courses = await response.json()
-            response = await fetch(" http://localhost:3001/notes")
-            const notes = await response.json()
+            const courses = await fetchCourses()
+            const notes = await fetchNotes()
             setCourses(courses)
             setNotes(notes)
         }; init()
     }, [])
 
+    const handleCreateNote = async (note) => {
+        await createNote(note)
+        const notes = await fetchNotes()
+        setNotes(notes)
+    }
+
+    const handleUpdateNote = async (note) => {
+        await updateNote(note)
+        const notes = await fetchNotes()
+        setNotes(notes)
+    }
+
     return (
-        <>
+        <div>
             <Navbar />
             <div className='container'>
                 <Courses courses={courses} />
-                <Notes notes={notes} setNotes={setNotes} />
+                <Notes
+                    notes={notes}
+                    handleCreateNote={handleCreateNote}
+                    handleUpdateNote={handleUpdateNote}
+                />
             </div>
-        </>
+        </div>
     )
 }
 
