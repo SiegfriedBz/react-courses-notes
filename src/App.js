@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Courses from './components/Courses'
 import Notes from './components/Notes'
+import FlashMessage from './components/FlashMessage'
 import courseService from './services/courses'
 import noteService from './services/notes'
 
@@ -40,6 +41,7 @@ const initNotes = [
 const App = () => {
     const [courses, setCourses] = useState(initCourses)
     const [notes, setNotes] = useState(initNotes)
+    const [message, setMessage] = useState('')
 
     useEffect(() => {
         const init = async () => {
@@ -54,24 +56,31 @@ const App = () => {
         await noteService.createNote(note)
         const notes = await noteService.fetchNotes()
         setNotes(notes)
+        setMessage('This note was created successfully')
     }
 
     const handleUpdateNote = async (note) => {
         await noteService.updateNote(note)
         const notes = await noteService.fetchNotes()
         setNotes(notes)
+        setMessage('This note was updated successfully')
     }
 
     const handleDeleteNote = async (id) => {
         await noteService.deleteNote(id)
         const notes = await noteService.fetchNotes()
         setNotes(notes)
+        setMessage('This note was deleted successfully')
     }
 
     return (
         <div>
             <Navbar />
             <div className='container'>
+                <FlashMessage
+                    message={message}
+                    setMessage={setMessage}
+                />
                 <Courses courses={courses} />
                 <Notes
                     notes={notes}

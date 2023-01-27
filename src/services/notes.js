@@ -41,16 +41,18 @@ const updateNote = async (note) => {
 }
 
 const deleteNote = async (id) => {
-    try {
-        await fetch(`${baseURL}/notes/${id}`,{
-            method: "delete",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-    }
-    catch (err) {
-        console.log(err)
+    if (window.confirm("Do you really want to delete this note?")) {
+        try {
+            await fetch(`${baseURL}/notes/${id}`,{
+                method: "delete",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 }
 
